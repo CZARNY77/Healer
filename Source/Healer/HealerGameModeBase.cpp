@@ -3,3 +3,7 @@
 
 #include "HealerGameModeBase.h"
 
+AHealerGameModeBase::AHealerGameModeBase()
+{
+	DefaultPawnClass = AHealerPlayer::StaticClass();
+}

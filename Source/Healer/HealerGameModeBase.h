@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "HealerPlayer.h"
 #include "GameFramework/GameModeBase.h"
 #include "HealerGameModeBase.generated.h"
 
@@ -14,4 +15,6 @@ class HEALER_API AHealerGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	AHealerGameModeBase();
 };
