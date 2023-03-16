@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "PaperSpriteComponent.h"
+#include "PaperFlipbookComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Pawn.h"
@@ -23,7 +23,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
-	UPaperSpriteComponent* PlayerSprite;
+	UPaperFlipbookComponent* PlayerFlipbook;
 
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArm;
@@ -38,4 +38,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+private:
+
+	APlayerController* PlayerController;
+	UPROPERTY(EditAnywhere, category = "Healer Settings")
+	float speed;
 };
