@@ -4,35 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "PaperFlipbookComponent.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
+#include "HealerPlayer.h"
 #include "GameFramework/Pawn.h"
-#include "HealerPlayer.generated.h"
+#include "InfectedSlime.generated.h"
 
 UCLASS()
-class HEALER_API AHealerPlayer : public APawn
+class HEALER_API AInfectedSlime : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	AHealerPlayer();
+	AInfectedSlime();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
-	USceneComponent* MainRoot;
-
-	UPROPERTY(EditAnywhere)
-	UPaperFlipbookComponent* PlayerFlipbook;
-
-	UPROPERTY(EditAnywhere)
-	USpringArmComponent* SpringArm;
-
-	UPROPERTY(EditAnywhere)
-	UCameraComponent* Camera;
+	UPaperFlipbookComponent* PaperFlipbook;
+	UPROPERTY(EditAnywhere, category = "Slime Settings")
+	AHealerPlayer* Player;
 
 public:	
 	// Called every frame
@@ -43,8 +35,6 @@ public:
 
 
 private:
-
-	APlayerController* PlayerController;
-	UPROPERTY(EditAnywhere, category = "Healer Settings")
+	UPROPERTY(EditAnywhere, category = "Slime Settings")
 	float speed;
 };

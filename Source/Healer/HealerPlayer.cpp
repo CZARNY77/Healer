@@ -15,15 +15,18 @@ AHealerPlayer::AHealerPlayer()
 
 	PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 
+	MainRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Main Root"));
 	PlayerFlipbook = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Player Flipbook"));
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm Camera"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+
+	PlayerFlipbook->SetupAttachment(MainRoot);
 
 	SpringArm->TargetArmLength = 100.f;
 	SpringArm->SetUsingAbsoluteRotation(true);
 	SpringArm->bEnableCameraLag = true;
 	SpringArm->CameraLagSpeed = 5.f;
-	SpringArm->SetupAttachment(PlayerFlipbook);
+	SpringArm->SetupAttachment(MainRoot);
 
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 }
@@ -50,6 +53,9 @@ void AHealerPlayer::Tick(float DeltaTime)
 		FVector2D CurrentLocation2D(Hit.Location.X, Hit.Location.Y);
 		FVector2D ActorLocation2D(GetActorLocation().X, GetActorLocation().Y);
 		FVector2D Direction = (CurrentLocation2D - ActorLocation2D).GetSafeNormal();
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("X: %f"), Direction.X));
+		if (Direction.X > 0) PlayerFlipbook->SetRelativeRotation(FRotator(0.f, 0.f, 90.f));
+		else PlayerFlipbook->SetRelativeRotation(FRotator(0.f, 180.f, -90.f));
 		SetActorLocation(FVector(ActorLocation2D + Direction * speed * DeltaTime, GetActorLocation().Z));
 	}
 
