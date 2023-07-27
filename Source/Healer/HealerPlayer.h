@@ -6,6 +6,9 @@
 #include "PaperFlipbookComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Blueprint/UserWidget.h"
+#include "Engine/Blueprint.h"
 #include "GameFramework/Pawn.h"
 #include "HealerPlayer.generated.h"
 
@@ -34,6 +37,16 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
 
+	UPROPERTY(EditAnywhere)
+	UCapsuleComponent* MyCollisionCapsule;
+
+	UFUNCTION()
+	void DetectionSlime(float dt);
+	UFUNCTION()
+	void heal(FHitResult Slime);
+	UFUNCTION()
+	UBlueprint* LoadCuredSlime();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -41,10 +54,18 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION()
+	void TakeDamage(int dmg);
+
 
 private:
 
 	APlayerController* PlayerController;
 	UPROPERTY(EditAnywhere, category = "Healer Settings")
 	float speed;
+	UPROPERTY(EditAnywhere, category = "Healer Settings")
+	int hp;
+
+	bool bIsEnlargingSphere;
+	float Radius;
 };

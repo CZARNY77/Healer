@@ -2,21 +2,22 @@
 
 #pragma once
 
+
 #include "CoreMinimal.h"
 #include "PaperFlipbookComponent.h"
-#include "HealerPlayer.h"
+#include "InfectedSlime.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Pawn.h"
-#include "InfectedSlime.generated.h"
+#include "CuredSlime.generated.h"
 
 UCLASS()
-class HEALER_API AInfectedSlime : public APawn
+class HEALER_API ACuredSlime : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	AInfectedSlime();
+	ACuredSlime();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,11 +27,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Slime Settings")
 	USphereComponent* MyCollisionSphere;
 	UPROPERTY(EditAnywhere, category = "Slime Settings")
-	AHealerPlayer* Player;
+	AInfectedSlime* TargetSlime;
 
 	UFUNCTION()
 	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
+	UFUNCTION()
+	void TargetDetection(float dt);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -38,15 +40,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION()
-	void TakeDamage(int dmg);
-
-
 private:
 	UPROPERTY(EditAnywhere, category = "Slime Settings")
 	float speed;
 	UPROPERTY(EditAnywhere, category = "Slime Settings")
 	float SphereRadius;
-	UPROPERTY(EditAnywhere, category = "Slime Settings")
-	int hp;
+
+	bool bIsEnlargingSphere;
+	float Radius;
 };

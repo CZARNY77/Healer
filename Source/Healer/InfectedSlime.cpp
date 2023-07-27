@@ -11,7 +11,15 @@ AInfectedSlime::AInfectedSlime()
 	PrimaryActorTick.bCanEverTick = true;
 
 	PaperFlipbook = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Infected Slime"));
+	
+	SphereRadius = 10.0f;
+	MyCollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Slime Sphere Collider"));
+	MyCollisionSphere->InitSphereRadius(SphereRadius);
+	MyCollisionSphere->SetCollisionProfileName("Trigger");
+	MyCollisionSphere->SetupAttachment(PaperFlipbook);
+	MyCollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AInfectedSlime::OnOverlapBegin);
 
+	hp = 1;
 }
 
 // Called when the game starts or when spawned
@@ -19,6 +27,15 @@ void AInfectedSlime::BeginPlay()
 {
 	Super::BeginPlay();
 	Player = Cast<AHealerPlayer>(UGameplayStatics::GetPlayerController(this, 0)->GetPawn());
+}
+
+void AInfectedSlime::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if ((OtherActor == Player) && (OtherActor != this) && (OtherComp != nullptr)) {
+		Player->TakeDamage(1);
+		Destroy();
+	}
+
 }
 
 // Called every frame
@@ -41,5 +58,13 @@ void AInfectedSlime::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AInfectedSlime::TakeDamage(int dmg)
+{
+	hp -= dmg;
+	if (hp <= 0) {
+		Destroy();
+	}
 }
 
