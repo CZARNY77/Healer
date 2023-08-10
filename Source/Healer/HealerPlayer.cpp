@@ -128,14 +128,16 @@ void AHealerPlayer::DetectionSlime(float dt)
 void AHealerPlayer::heal(FHitResult slime)
 {
 
-	FVector SlimeLocation = slime.GetActor()->GetActorLocation();
-	UBlueprint* BlueprintObj = LoadCuredSlime();
-	slime.GetActor()->Destroy();
-	if (BlueprintObj != nullptr) {
-		GetWorld()->SpawnActor<ACuredSlime>(BlueprintObj->GeneratedClass, SlimeLocation, FRotator(0,0,0));
+	if (slime.GetActor()) {
+		FVector SlimeLocation = slime.GetActor()->GetActorLocation();
+		UBlueprint* BlueprintObj = LoadCuredSlime();
+		slime.GetActor()->Destroy();
+		if (BlueprintObj != nullptr) {
+			GetWorld()->SpawnActor<ACuredSlime>(BlueprintObj->GeneratedClass, SlimeLocation, FRotator(0, 0, 0));
+		}
+		//GetWorld()->SpawnActor<ABP_CuredSlime>(SlimeLocation, SlimeRotator);
+		bIsEnlargingSphere = true;
 	}
-	//GetWorld()->SpawnActor<ABP_CuredSlime>(SlimeLocation, SlimeRotator);
-	bIsEnlargingSphere = true;
 }
 
 UBlueprint* AHealerPlayer::LoadCuredSlime()
